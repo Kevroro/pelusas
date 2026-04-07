@@ -1,509 +1,941 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#fff7ef" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="description" content="Contador de puntos de Pelusas" />
+  <title>Pelusas · Contador</title>
 
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap');
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@700;800;900&display=swap');
 
-  :root {
-    --bg: #1a1040;
-    --card-bg: #241958;
-    --card-border: #3d2e80;
-    --accent1: #f7c948;
-    --accent2: #ff6b6b;
-    --accent3: #5bc4f5;
-    --accent4: #7ee07e;
-    --accent5: #ff9f43;
-    --text: #fff;
-    --text-muted: #b0a8d8;
-  }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-  body { background: transparent; font-family: 'Nunito', sans-serif; color: var(--text); }
+    :root {
+      --bg: #fff7ef;
+      --paper: #fffdf8;
+      --paper-2: #fff4ea;
+      --stroke: #7c5a4f;
+      --stroke-soft: #cfae9f;
 
-  .app {
-    background: var(--bg);
-    max-width: 440px;
-    margin: 0 auto;
-    min-height: 100vh;
-    padding: 0 0 2rem;
-    position: relative;
-    overflow: hidden;
-  }
+      --pink: #ff8fb1;
+      --yellow: #ffd54f;
+      --mint: #94e3b0;
+      --sky: #87d9ff;
+      --orange: #ffb36b;
+      --lilac: #c8a4ff;
 
-  .bg-dots {
-    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-    background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
-    background-size: 24px 24px;
-    pointer-events: none;
-  }
+      --title: #6a3f35;
+      --text: #5a4a44;
+      --text-soft: #8f7b73;
+      --danger: #f26d7d;
 
-  .header {
-    background: #120b30;
-    padding: 1.2rem 1rem 1rem;
-    text-align: center;
-    border-bottom: 3px solid var(--accent1);
-    position: relative;
-  }
+      --shadow: 0 8px 0 rgba(124, 90, 79, 0.14);
+      --shadow-soft: 0 4px 14px rgba(124, 90, 79, 0.10);
 
-  .logo-pelusas {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
 
-  .logo-text {
-    font-size: 34px;
-    font-weight: 900;
-    letter-spacing: 2px;
-    background: linear-gradient(180deg, #ffe066, #ffb300);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: none;
-    line-height: 1;
-  }
+      --app-max: 480px;
+      --pad: 16px;
+    }
 
-  .logo-sub {
-    font-size: 12px;
-    color: var(--text-muted);
-    letter-spacing: 1px;
-    margin-top: 2px;
-    text-transform: uppercase;
-  }
+    html {
+      height: 100%;
+      background: var(--bg);
+    }
 
-  .pelusa-row {
-    display: flex; justify-content: center; gap: 6px; margin-top: 8px;
-  }
+    body {
+      min-height: 100%;
+      background: var(--bg);
+      font-family: 'Nunito', sans-serif;
+      color: var(--text);
+      overscroll-behavior-y: none;
+    }
 
-  .pelusa-mini {
-    width: 28px; height: 28px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px;
-    border: 2px solid rgba(255,255,255,0.2);
-  }
+    button, input {
+      font: inherit;
+    }
 
-  .content { padding: 1rem; position: relative; }
+    .app {
+      width: 100%;
+      max-width: var(--app-max);
+      margin: 0 auto;
+      min-height: 100dvh;
+      position: relative;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 15% 12%, rgba(255, 143, 177, 0.18) 0 70px, transparent 72px),
+        radial-gradient(circle at 88% 10%, rgba(135, 217, 255, 0.20) 0 84px, transparent 86px),
+        radial-gradient(circle at 18% 82%, rgba(148, 227, 176, 0.18) 0 88px, transparent 90px),
+        radial-gradient(circle at 92% 75%, rgba(255, 211, 79, 0.16) 0 90px, transparent 92px),
+        linear-gradient(180deg, var(--bg) 0%, #fff2e5 100%);
+      padding-bottom: calc(20px + env(safe-area-inset-bottom));
+    }
 
-  .card {
-    background: var(--card-bg);
-    border: 1.5px solid var(--card-border);
-    border-radius: 16px;
-    padding: 1.1rem 1.1rem;
-    margin-bottom: 1rem;
-  }
+    .bg-dots {
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle, rgba(124, 90, 79, 0.08) 1px, transparent 1px),
+        radial-gradient(circle, rgba(255,255,255,0.65) 2px, transparent 2px);
+      background-size: 26px 26px, 90px 90px;
+      background-position: 0 0, 10px 20px;
+      pointer-events: none;
+      opacity: 0.65;
+    }
 
-  .card-title {
-    font-size: 13px;
-    font-weight: 800;
-    color: var(--accent1);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding:
+        calc(14px + env(safe-area-inset-top))
+        var(--pad)
+        14px;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(255,253,249,0.96) 0%, rgba(255,242,231,0.96) 100%);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 4px solid #f4cf71;
+      box-shadow: 0 6px 20px rgba(124, 90, 79, 0.08);
+    }
 
-  .player-setup-row {
-    display: flex; gap: 8px; align-items: center; margin-bottom: 8px;
-  }
+    .logo-pelusas {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
 
-  .color-dot {
-    width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;
-  }
+    .logo-text {
+      font-family: 'Baloo 2', cursive;
+      font-size: clamp(30px, 8vw, 40px);
+      font-weight: 800;
+      letter-spacing: 1px;
+      line-height: 1;
+      color: var(--title);
+      text-shadow:
+        0 3px 0 #fff,
+        0 6px 0 rgba(255, 213, 79, 0.35);
+    }
 
-  .player-setup-row input[type="text"] {
-    flex: 1;
-    background: #120b30;
-    border: 1.5px solid var(--card-border);
-    border-radius: 10px;
-    color: white;
-    font-family: 'Nunito', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    padding: 8px 12px;
-    outline: none;
-  }
-  .player-setup-row input[type="text"]::placeholder { color: #6055a0; }
-  .player-setup-row input[type="text"]:focus { border-color: var(--accent1); }
+    .logo-icon {
+      width: clamp(36px, 10vw, 42px);
+      height: clamp(36px, 10vw, 42px);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      border: 3px solid var(--stroke-soft);
+      box-shadow: var(--shadow-soft);
+      font-size: clamp(18px, 5vw, 22px);
+      transform: rotate(-8deg);
+      flex-shrink: 0;
+    }
 
-  .remove-btn {
-    background: rgba(255,107,107,0.15);
-    border: 1.5px solid #ff6b6b44;
-    border-radius: 8px;
-    color: #ff6b6b;
-    width: 32px; height: 32px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 900;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .remove-btn:hover { background: rgba(255,107,107,0.3); }
+    .logo-icon.right {
+      transform: rotate(8deg);
+    }
 
-  .add-btn {
-    width: 100%;
-    background: none;
-    border: 1.5px dashed var(--card-border);
-    border-radius: 10px;
-    color: var(--text-muted);
-    font-family: 'Nunito', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    padding: 8px;
-    cursor: pointer;
-    letter-spacing: 0.5px;
-  }
-  .add-btn:hover { border-color: var(--accent1); color: var(--accent1); }
+    .logo-sub {
+      margin-top: 4px;
+      font-size: 11px;
+      font-weight: 900;
+      color: var(--text-soft);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
 
-  .start-btn {
-    width: 100%;
-    background: linear-gradient(135deg, #f7c948, #ff9f43);
-    border: none;
-    border-radius: 14px;
-    color: #1a1040;
-    font-family: 'Nunito', sans-serif;
-    font-size: 17px;
-    font-weight: 900;
-    padding: 13px;
-    cursor: pointer;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    box-shadow: 0 4px 0 #c4821a;
-    transition: transform 0.1s;
-  }
-  .start-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #c4821a; }
-  .start-btn:hover { background: linear-gradient(135deg, #ffe066, #ffb300); }
+    .pelusa-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
 
-  .round-badge {
-    display: inline-block;
-    background: #2e1f70;
-    border: 1.5px solid var(--card-border);
-    border-radius: 999px;
-    padding: 4px 14px;
-    font-size: 12px;
-    font-weight: 800;
-    color: var(--accent1);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
+    .pelusa-mini {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      border: 2px solid rgba(124, 90, 79, 0.18);
+      background: rgba(255,255,255,0.72);
+      box-shadow: 0 3px 0 rgba(124, 90, 79, 0.08);
+    }
 
-  .score-list { display: flex; flex-direction: column; gap: 8px; }
+    .content {
+      position: relative;
+      padding: var(--pad);
+    }
 
-  .score-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #120b30;
-    border: 1.5px solid var(--card-border);
-    border-radius: 12px;
-    padding: 9px 12px;
-  }
-  .score-row.leader { border-color: var(--accent1); background: #1e1350; }
+    .card {
+      position: relative;
+      background: linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+      border: 2px solid var(--stroke-soft);
+      border-radius: var(--radius-xl);
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+    }
 
-  .pelusa-avatar {
-    width: 38px; height: 38px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 900;
-    border: 2px solid rgba(255,255,255,0.15);
-    flex-shrink: 0;
-  }
+    .card-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--title);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      background: #fff7c9;
+      border: 2px solid #f1d27a;
+      border-radius: 999px;
+      padding: 6px 12px;
+    }
 
-  .rank-num {
-    font-size: 12px; font-weight: 900; color: #6055a0; width: 16px; text-align: center;
-  }
+    .player-setup-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
 
-  .score-name {
-    flex: 1; font-size: 15px; font-weight: 800; color: white;
-  }
+    .color-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      border: 2px solid rgba(124, 90, 79, 0.18);
+    }
 
-  .score-pts {
-    font-size: 22px; font-weight: 900; color: var(--accent1);
-  }
+    .player-setup-row input[type="text"] {
+      flex: 1;
+      min-width: 0;
+      height: 46px;
+      background: #fff;
+      border: 2px solid #e8cfc1;
+      border-radius: 14px;
+      color: var(--text);
+      font-size: 16px;
+      font-weight: 800;
+      padding: 0 12px;
+      outline: none;
+      appearance: none;
+    }
 
-  .leader-icon { font-size: 16px; }
+    .player-setup-row input[type="text"]::placeholder {
+      color: #b89b90;
+    }
 
-  .round-inputs { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+    .player-setup-row input[type="text"]:focus,
+    .round-input-row input[type="number"]:focus {
+      border-color: #f1c765;
+      background: #fffdf8;
+    }
 
-  .round-input-row {
-    display: flex; align-items: center; gap: 10px;
-  }
-  .round-input-row .ri-name {
-    flex: 1; font-size: 14px; font-weight: 800; color: var(--text-muted);
-  }
-  .round-input-row input[type="number"] {
-    width: 72px; text-align: center;
-    background: #120b30;
-    border: 1.5px solid var(--card-border);
-    border-radius: 10px;
-    color: var(--accent1);
-    font-family: 'Nunito', sans-serif;
-    font-size: 18px;
-    font-weight: 900;
-    padding: 6px 8px;
-    outline: none;
-  }
-  .round-input-row input[type="number"]:focus { border-color: var(--accent1); }
+    .remove-btn {
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      background: #fff1f3;
+      border: 2px solid #f7bec6;
+      border-radius: 12px;
+      color: #d95d71;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-  .confirm-btn {
-    width: 100%;
-    background: linear-gradient(135deg, #5bc4f5, #2e86c1);
-    border: none;
-    border-radius: 12px;
-    color: white;
-    font-family: 'Nunito', sans-serif;
-    font-size: 15px;
-    font-weight: 900;
-    padding: 11px;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 3px 0 #1565a0;
-  }
-  .confirm-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #1565a0; }
-  .confirm-btn:hover { background: linear-gradient(135deg, #7dd6ff, #3da0dd); }
+    .add-btn,
+    .new-game-btn,
+    .finish-btn {
+      width: 100%;
+      min-height: 48px;
+      border-radius: 16px;
+      font-size: 14px;
+      font-weight: 900;
+      padding: 10px 12px;
+      cursor: pointer;
+      letter-spacing: 0.4px;
+    }
 
-  .history-toggle {
-    background: none; border: none;
-    color: var(--text-muted);
-    font-family: 'Nunito', sans-serif;
-    font-size: 13px; font-weight: 700;
-    cursor: pointer;
-    display: flex; align-items: center; gap: 6px;
-    padding: 0;
-  }
-  .history-toggle:hover { color: var(--accent1); }
+    .add-btn,
+    .new-game-btn {
+      background: #fff;
+      border: 2px dashed #d8b9aa;
+      color: var(--text-soft);
+    }
 
-  .history-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; font-family: 'Nunito', sans-serif; }
-  .history-table th { color: var(--text-muted); font-weight: 800; padding: 4px 6px; border-bottom: 1px solid var(--card-border); text-align: center; }
-  .history-table th:first-child { text-align: left; }
-  .history-table td { padding: 5px 6px; color: var(--text); text-align: center; border-bottom: 1px solid #1e1350; font-weight: 700; }
-  .history-table td:first-child { color: var(--text-muted); text-align: left; }
-  .history-table tr.total-row td { color: var(--accent1); font-weight: 900; border-top: 1px solid var(--card-border); border-bottom: none; }
+    .finish-btn {
+      background: #fff2f4;
+      border: 2px solid #f4c0c7;
+      color: #b85a67;
+      margin-top: 10px;
+    }
 
-  .end-section { text-align: center; padding: 0.5rem 0; }
-  .win-emoji { font-size: 44px; display: block; margin-bottom: 6px; }
-  .win-title { font-size: 13px; font-weight: 800; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
-  .win-name { font-size: 26px; font-weight: 900; color: var(--accent1); margin: 4px 0; }
-  .win-pts { font-size: 14px; color: var(--text-muted); font-weight: 700; margin-bottom: 14px; }
+    .start-btn,
+    .confirm-btn {
+      width: 100%;
+      min-height: 54px;
+      border: none;
+      color: var(--title);
+      font-family: 'Baloo 2', cursive;
+      font-size: 22px;
+      font-weight: 800;
+      padding: 12px 16px;
+      cursor: pointer;
+      letter-spacing: 0.4px;
+      border-radius: 20px;
+      box-shadow: 0 5px 0 rgba(124, 90, 79, 0.18);
+    }
 
-  .new-game-btn {
-    background: none;
-    border: 2px solid var(--card-border);
-    border-radius: 12px;
-    color: var(--text-muted);
-    font-family: 'Nunito', sans-serif;
-    font-size: 14px; font-weight: 800;
-    padding: 9px 22px;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .new-game-btn:hover { border-color: var(--accent1); color: var(--accent1); }
+    .start-btn {
+      background: linear-gradient(180deg, #ffe27a 0%, #ffca55 100%);
+    }
 
-  .hidden { display: none !important; }
-</style>
+    .confirm-btn {
+      background: linear-gradient(180deg, #9ae0ff 0%, #72cfff 100%);
+    }
 
-<div class="app">
-  <div class="bg-dots"></div>
+    .start-btn:active,
+    .confirm-btn:active,
+    .add-btn:active,
+    .new-game-btn:active,
+    .remove-btn:active,
+    .finish-btn:active {
+      transform: translateY(1px);
+    }
 
-  <div class="header">
-    <div class="logo-pelusas">
-      <span style="font-size:28px;">🧶</span>
-      <span class="logo-text">PELUSAS</span>
-      <span style="font-size:28px;">🧶</span>
-    </div>
-    <div class="logo-sub">Contador de puntos</div>
-    <div class="pelusa-row">
-      <div class="pelusa-mini" style="background:#ff6b6b33; border-color:#ff6b6b;">🔴</div>
-      <div class="pelusa-mini" style="background:#f7c94833; border-color:#f7c948;">🟡</div>
-      <div class="pelusa-mini" style="background:#7ee07e33; border-color:#7ee07e;">🟢</div>
-      <div class="pelusa-mini" style="background:#5bc4f533; border-color:#5bc4f5;">🔵</div>
-      <div class="pelusa-mini" style="background:#ff9f4333; border-color:#ff9f43;">🟠</div>
-    </div>
-  </div>
+    .round-badge {
+      display: inline-block;
+      background: #fff4cf;
+      border: 2px solid #f0cd76;
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--title);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
 
-  <div class="content">
+    .score-list,
+    .round-inputs,
+    .round-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-    <!-- SETUP -->
-    <div id="setup-view">
-      <div class="card">
-        <div class="card-title">Jugadores</div>
-        <div id="player-inputs"></div>
-        <button class="add-btn" onclick="addPlayer()">+ Añadir jugador</button>
+    .score-row,
+    .round-input-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.72);
+      border: 2px solid #ecd4c8;
+      border-radius: 18px;
+      padding: 10px 12px;
+    }
+
+    .score-row.leader {
+      background: linear-gradient(180deg, #fff9dd 0%, #fff2bf 100%);
+      border-color: #efcc72;
+    }
+
+    .pelusa-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 900;
+      border: 2px solid rgba(124, 90, 79, 0.15);
+      flex-shrink: 0;
+    }
+
+    .rank-num {
+      width: 18px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 900;
+      color: #b08a7b;
+      flex-shrink: 0;
+    }
+
+    .score-name,
+    .round-input-row .ri-name {
+      flex: 1;
+      min-width: 0;
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--text);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .score-pts {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--title);
+      flex-shrink: 0;
+    }
+
+    .leader-icon {
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .round-input-row input[type="number"] {
+      width: 74px;
+      min-width: 74px;
+      height: 42px;
+      text-align: center;
+      background: #fff;
+      border: 2px solid #e8cfc1;
+      border-radius: 14px;
+      color: var(--title);
+      font-size: 18px;
+      font-weight: 900;
+      outline: none;
+      appearance: textfield;
+    }
+
+    .round-input-row input[type="number"]::-webkit-outer-spin-button,
+    .round-input-row input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .history-toggle {
+      background: none;
+      border: none;
+      color: var(--text-soft);
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 0;
+    }
+
+    .history-wrap-mobile {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-top: 10px;
+    }
+
+    .history-table {
+      width: 100%;
+      min-width: 320px;
+      border-collapse: separate;
+      border-spacing: 0 6px;
+      font-size: 12px;
+    }
+
+    .history-table th {
+      color: var(--text-soft);
+      font-weight: 900;
+      padding: 4px 6px;
+      text-align: center;
+    }
+
+    .history-table th:first-child,
+    .history-table td:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+    }
+
+    .history-table td {
+      padding: 8px 6px;
+      color: var(--text);
+      text-align: center;
+      font-weight: 800;
+      background: rgba(255,255,255,0.95);
+      border-top: 2px solid #ecd4c8;
+      border-bottom: 2px solid #ecd4c8;
+    }
+
+    .history-table td:first-child {
+      color: var(--text-soft);
+      text-align: left;
+      border-left: 2px solid #ecd4c8;
+      border-radius: 12px 0 0 12px;
+      padding-left: 10px;
+      background: rgba(255,255,255,0.98);
+    }
+
+    .history-table td:last-child {
+      border-right: 2px solid #ecd4c8;
+      border-radius: 0 12px 12px 0;
+    }
+
+    .history-table tr.total-row td {
+      background: #fff4cf;
+      border-top-color: #f0cd76;
+      border-bottom-color: #f0cd76;
+      color: var(--title);
+      font-weight: 900;
+    }
+
+    .end-section {
+      text-align: center;
+      padding: 6px 0;
+    }
+
+    .win-emoji {
+      font-size: 48px;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .win-title {
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--text-soft);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .win-name {
+      font-family: 'Baloo 2', cursive;
+      font-size: clamp(24px, 7vw, 30px);
+      font-weight: 800;
+      color: var(--title);
+      margin: 4px 0;
+      line-height: 1.05;
+    }
+
+    .win-pts {
+      font-size: 14px;
+      color: var(--text-soft);
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .app-hint {
+      margin-top: 12px;
+      font-size: 12px;
+      line-height: 1.35;
+      color: var(--text-soft);
+      text-align: center;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 390px) {
+      :root {
+        --pad: 12px;
+      }
+
+      .card {
+        padding: 14px;
+        border-radius: 22px;
+      }
+
+      .score-row,
+      .round-input-row {
+        padding: 9px 10px;
+        gap: 8px;
+      }
+
+      .pelusa-avatar {
+        width: 34px;
+        height: 34px;
+        font-size: 12px;
+      }
+
+      .score-pts {
+        font-size: 20px;
+      }
+
+      .round-input-row input[type="number"] {
+        width: 68px;
+        min-width: 68px;
+        font-size: 17px;
+      }
+
+      .pelusa-mini {
+        width: 28px;
+        height: 28px;
+        font-size: 13px;
+      }
+
+      .start-btn,
+      .confirm-btn {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="bg-dots"></div>
+
+    <div class="header">
+      <div class="logo-pelusas">
+        <span class="logo-icon">🧶</span>
+        <span class="logo-text">PELUSAS</span>
+        <span class="logo-icon right">🧶</span>
       </div>
-      <button class="start-btn" onclick="startGame()">¡A jugar!</button>
+      <div class="logo-sub">Contador de puntos</div>
+      <div class="pelusa-row">
+        <div class="pelusa-mini" style="background:#ffe4ea; border-color:#ffb4c5;">🔴</div>
+        <div class="pelusa-mini" style="background:#fff6d5; border-color:#f2d77a;">🟡</div>
+        <div class="pelusa-mini" style="background:#e5f8ea; border-color:#9fdbb1;">🟢</div>
+        <div class="pelusa-mini" style="background:#e4f6ff; border-color:#9ed9f3;">🔵</div>
+        <div class="pelusa-mini" style="background:#fff0de; border-color:#f5c28e;">🟠</div>
+      </div>
     </div>
 
-    <!-- GAME -->
-    <div id="game-view" class="hidden">
+    <div class="content">
+      <div id="setup-view">
+        <div class="card">
+          <div class="card-title">✨ Jugadores</div>
+          <div id="player-inputs"></div>
+          <button class="add-btn" onclick="addPlayer()">+ Añadir jugador</button>
+        </div>
 
-      <div class="card" id="scoreboard-card">
-        <div class="card-title">Clasificación</div>
-        <div class="score-list" id="score-list"></div>
-      </div>
+        <button class="start-btn" onclick="startGame()">¡A jugar!</button>
 
-      <div class="card" id="round-card">
-        <div id="round-badge" class="round-badge"></div>
-        <div class="card-title" style="margin-bottom:8px;">Puntos de esta ronda</div>
-        <div class="round-inputs" id="round-inputs"></div>
-        <button class="confirm-btn" onclick="confirmRound()">Confirmar ronda ✓</button>
-      </div>
-
-      <div class="card hidden" id="end-card">
-        <div class="end-section">
-          <span class="win-emoji">🏆</span>
-          <div class="win-title">Ganador/a</div>
-          <div class="win-name" id="win-name"></div>
-          <div class="win-pts" id="win-pts"></div>
-          <button class="new-game-btn" onclick="resetGame()">Nueva partida</button>
+        <div class="app-hint">
+          Luego puedes abrir esta URL en el móvil y usar “Añadir a pantalla de inicio”.
         </div>
       </div>
 
-      <div class="card">
-        <button class="history-toggle" onclick="toggleHistory()">
-          <span id="h-arrow">▶</span> Historial de rondas
-        </button>
-        <div id="history-wrap" class="hidden">
-          <table class="history-table">
-            <thead id="h-head"></thead>
-            <tbody id="h-body"></tbody>
-          </table>
+      <div id="game-view" class="hidden">
+        <div class="card" id="scoreboard-card">
+          <div class="card-title">🏆 Clasificación</div>
+          <div class="score-list" id="score-list"></div>
+        </div>
+
+        <div class="card" id="round-card">
+          <div id="round-badge" class="round-badge"></div>
+          <div class="card-title" style="margin-bottom:8px;">☁️ Puntos de esta ronda</div>
+          <div class="round-inputs" id="round-inputs"></div>
+
+          <div class="round-actions">
+            <button class="confirm-btn" onclick="confirmRound()">Confirmar ronda ✓</button>
+            <button class="finish-btn" onclick="endGame()">Finalizar partida</button>
+          </div>
+        </div>
+
+        <div class="card hidden" id="end-card">
+          <div class="end-section">
+            <span class="win-emoji">🏆</span>
+            <div class="win-title">Ganador/a</div>
+            <div class="win-name" id="win-name"></div>
+            <div class="win-pts" id="win-pts"></div>
+            <button class="new-game-btn" onclick="resetGame()">Nueva partida</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <button class="history-toggle" onclick="toggleHistory()">
+            <span id="h-arrow">▶</span> Historial de rondas
+          </button>
+
+          <div id="history-wrap" class="hidden history-wrap-mobile">
+            <table class="history-table">
+              <thead id="h-head"></thead>
+              <tbody id="h-body"></tbody>
+            </table>
+          </div>
         </div>
       </div>
-
     </div>
   </div>
-</div>
 
-<script>
-const COLORS = [
-  {bg:'#ff6b6b33',border:'#ff6b6b',text:'#ff6b6b',dot:'#ff6b6b'},
-  {bg:'#f7c94833',border:'#f7c948',text:'#f7c948',dot:'#f7c948'},
-  {bg:'#7ee07e33',border:'#7ee07e',text:'#7ee07e',dot:'#7ee07e'},
-  {bg:'#5bc4f533',border:'#5bc4f5',text:'#5bc4f5',dot:'#5bc4f5'},
-  {bg:'#ff9f4333',border:'#ff9f43',text:'#ff9f43',dot:'#ff9f43'},
-  {bg:'#c39bd333',border:'#c39bd3',text:'#c39bd3',dot:'#c39bd3'},
-];
+  <script>
+    const COLORS = [
+      {bg:'#ffe4ea', border:'#ffb4c5', text:'#d95d71', dot:'#ff8fb1'},
+      {bg:'#fff6d5', border:'#f2d77a', text:'#b98a17', dot:'#ffd54f'},
+      {bg:'#e5f8ea', border:'#9fdbb1', text:'#4c9665', dot:'#94e3b0'},
+      {bg:'#e4f6ff', border:'#9ed9f3', text:'#3f84a8', dot:'#87d9ff'},
+      {bg:'#fff0de', border:'#f5c28e', text:'#b66c2c', dot:'#ffb36b'},
+      {bg:'#f2eaff', border:'#d7bafc', text:'#8a63c9', dot:'#c8a4ff'}
+    ];
 
-let players = [], scores = [], history = [], currentRound = 0, histOpen = false;
+    let players = [];
+    let scores = [];
+    let history = [];
+    let currentRound = 0;
+    let histOpen = false;
 
-function addPlayer(name='') {
-  const wrap = document.getElementById('player-inputs');
-  const i = wrap.children.length;
-  if (i >= 6) return;
-  const c = COLORS[i % COLORS.length];
-  const row = document.createElement('div');
-  row.className = 'player-setup-row';
-  row.innerHTML = `
-    <div class="color-dot" style="background:${c.dot}"></div>
-    <input type="text" placeholder="Jugador ${i+1}" value="${name}" />
-    <button class="remove-btn" onclick="removePlayer(this)">✕</button>
-  `;
-  wrap.appendChild(row);
-}
+    function saveState() {
+      const state = {
+        players,
+        scores,
+        history,
+        currentRound,
+        histOpen,
+        inGame: !document.getElementById('game-view').classList.contains('hidden'),
+        ended: !document.getElementById('end-card').classList.contains('hidden')
+      };
+      localStorage.setItem('pelusas-score-app', JSON.stringify(state));
+    }
 
-function removePlayer(btn) {
-  const wrap = document.getElementById('player-inputs');
-  if (wrap.children.length > 2) btn.parentElement.remove();
-}
+    function loadState() {
+      const raw = localStorage.getItem('pelusas-score-app');
+      if (!raw) return;
 
-function startGame() {
-  const inputs = document.querySelectorAll('#player-inputs input');
-  players = Array.from(inputs).map((inp,i) => inp.value.trim() || `Jugador ${i+1}`);
-  if (players.length < 2) return;
-  scores = players.map(() => 0);
-  history = [];
-  currentRound = 0;
-  document.getElementById('setup-view').classList.add('hidden');
-  document.getElementById('game-view').classList.remove('hidden');
-  renderScore();
-  renderRound();
-}
+      try {
+        const state = JSON.parse(raw);
+        if (!state || !Array.isArray(state.players) || state.players.length < 2) return;
 
-function renderScore() {
-  const list = document.getElementById('score-list');
-  const sorted = players.map((p,i) => ({name:p,score:scores[i],idx:i})).sort((a,b)=>b.score-a.score);
-  list.innerHTML = '';
-  sorted.forEach((p, rank) => {
-    const c = COLORS[p.idx % COLORS.length];
-    const initials = p.name.split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2) || '?';
-    const isLeader = rank === 0 && (currentRound > 0 || p.score > 0);
-    const row = document.createElement('div');
-    row.className = 'score-row' + (isLeader ? ' leader' : '');
-    row.innerHTML = `
-      <span class="rank-num">${rank+1}</span>
-      <div class="pelusa-avatar" style="background:${c.bg};border-color:${c.border};color:${c.text}">${initials}</div>
-      <span class="score-name">${p.name}</span>
-      ${isLeader ? '<span class="leader-icon">👑</span>' : ''}
-      <span class="score-pts">${p.score}</span>
-    `;
-    list.appendChild(row);
-  });
-}
+        players = state.players;
+        scores = Array.isArray(state.scores) ? state.scores : players.map(() => 0);
+        history = Array.isArray(state.history) ? state.history : [];
+        currentRound = Number.isInteger(state.currentRound) ? state.currentRound : history.length;
+        histOpen = !!state.histOpen;
 
-function renderRound() {
-  document.getElementById('round-badge').textContent = `Ronda ${currentRound + 1}`;
-  const wrap = document.getElementById('round-inputs');
-  wrap.innerHTML = '';
-  players.forEach((p,i) => {
-    const c = COLORS[i % COLORS.length];
-    const row = document.createElement('div');
-    row.className = 'round-input-row';
-    row.innerHTML = `
-      <div class="pelusa-avatar" style="background:${c.bg};border-color:${c.border};color:${c.text};width:30px;height:30px;font-size:11px;font-weight:900;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        ${p.split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2)||'?'}
-      </div>
-      <span class="ri-name">${p}</span>
-      <input type="number" id="ri-${i}" min="0" value="0" />
-    `;
-    wrap.appendChild(row);
-  });
-}
+        rebuildSetupPlayers(players);
 
-function confirmRound() {
-  const rs = players.map((_,i) => parseInt(document.getElementById(`ri-${i}`).value)||0);
-  rs.forEach((s,i) => scores[i] += s);
-  history.push(rs);
-  currentRound++;
-  renderScore();
-  renderHistory();
-  renderRound();
-}
+        if (state.inGame) {
+          document.getElementById('setup-view').classList.add('hidden');
+          document.getElementById('game-view').classList.remove('hidden');
 
-function renderHistory() {
-  const head = document.getElementById('h-head');
-  const body = document.getElementById('h-body');
-  head.innerHTML = '<tr><th>Ronda</th>' + players.map(p=>`<th>${p.split(' ')[0]}</th>`).join('') + '</tr>';
-  body.innerHTML = '';
-  history.forEach((r,ri) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${ri+1}</td>` + r.map(s=>`<td>${s}</td>`).join('');
-    body.appendChild(tr);
-  });
-  const tot = document.createElement('tr');
-  tot.className = 'total-row';
-  tot.innerHTML = `<td>Total</td>` + scores.map(s=>`<td>${s}</td>`).join('');
-  body.appendChild(tot);
-}
+          renderScore();
+          renderRound();
+          renderHistory();
 
-function toggleHistory() {
-  histOpen = !histOpen;
-  document.getElementById('history-wrap').classList.toggle('hidden', !histOpen);
-  document.getElementById('h-arrow').textContent = histOpen ? '▼' : '▶';
-}
+          document.getElementById('history-wrap').classList.toggle('hidden', !histOpen);
+          document.getElementById('h-arrow').textContent = histOpen ? '▼' : '▶';
 
-function resetGame() {
-  document.getElementById('game-view').classList.add('hidden');
-  document.getElementById('end-card').classList.add('hidden');
-  document.getElementById('round-card').classList.remove('hidden');
-  document.getElementById('setup-view').classList.remove('hidden');
-}
+          if (state.ended) {
+            endGame(false);
+          }
+        }
+      } catch (e) {}
+    }
 
-function endGame() {
-  document.getElementById('round-card').classList.add('hidden');
-  document.getElementById('end-card').classList.remove('hidden');
-  const sorted = players.map((p,i)=>({name:p,score:scores[i]})).sort((a,b)=>b.score-a.score);
-  document.getElementById('win-name').textContent = sorted[0].name;
-  document.getElementById('win-pts').textContent = `${sorted[0].score} puntos en ${currentRound} rondas`;
-}
+    function rebuildSetupPlayers(names) {
+      const wrap = document.getElementById('player-inputs');
+      wrap.innerHTML = '';
+      names.forEach(name => addPlayer(name));
+    }
 
-addPlayer('');
-addPlayer('');
-</script>
+    function addPlayer(name = '') {
+      const wrap = document.getElementById('player-inputs');
+      const i = wrap.children.length;
+      if (i >= 6) return;
+
+      const c = COLORS[i % COLORS.length];
+      const row = document.createElement('div');
+      row.className = 'player-setup-row';
+      row.innerHTML = `
+        <div class="color-dot" style="background:${c.dot}"></div>
+        <input type="text" placeholder="Jugador ${i + 1}" value="${escapeHtml(name)}" />
+        <button class="remove-btn" onclick="removePlayer(this)">✕</button>
+      `;
+      wrap.appendChild(row);
+    }
+
+    function removePlayer(btn) {
+      const wrap = document.getElementById('player-inputs');
+      if (wrap.children.length > 2) {
+        btn.parentElement.remove();
+      }
+    }
+
+    function startGame() {
+      const inputs = document.querySelectorAll('#player-inputs input');
+      players = Array.from(inputs).map((inp, i) => inp.value.trim() || `Jugador ${i + 1}`);
+
+      if (players.length < 2) return;
+
+      scores = players.map(() => 0);
+      history = [];
+      currentRound = 0;
+      histOpen = false;
+
+      document.getElementById('setup-view').classList.add('hidden');
+      document.getElementById('game-view').classList.remove('hidden');
+      document.getElementById('history-wrap').classList.add('hidden');
+      document.getElementById('h-arrow').textContent = '▶';
+      document.getElementById('round-card').classList.remove('hidden');
+      document.getElementById('end-card').classList.add('hidden');
+
+      renderScore();
+      renderRound();
+      renderHistory();
+      saveState();
+    }
+
+    function renderScore() {
+      const list = document.getElementById('score-list');
+      const sorted = players
+        .map((p, i) => ({ name: p, score: scores[i], idx: i }))
+        .sort((a, b) => b.score - a.score);
+
+      list.innerHTML = '';
+
+      sorted.forEach((p, rank) => {
+        const c = COLORS[p.idx % COLORS.length];
+        const initials = getInitials(p.name);
+        const isLeader = rank === 0 && (currentRound > 0 || p.score > 0);
+
+        const row = document.createElement('div');
+        row.className = 'score-row' + (isLeader ? ' leader' : '');
+        row.innerHTML = `
+          <span class="rank-num">${rank + 1}</span>
+          <div class="pelusa-avatar" style="background:${c.bg};border-color:${c.border};color:${c.text}">${initials}</div>
+          <span class="score-name">${escapeHtml(p.name)}</span>
+          ${isLeader ? '<span class="leader-icon">👑</span>' : ''}
+          <span class="score-pts">${p.score}</span>
+        `;
+        list.appendChild(row);
+      });
+    }
+
+    function renderRound() {
+      document.getElementById('round-badge').textContent = `Ronda ${currentRound + 1}`;
+      const wrap = document.getElementById('round-inputs');
+      wrap.innerHTML = '';
+
+      players.forEach((p, i) => {
+        const c = COLORS[i % COLORS.length];
+        const initials = getInitials(p);
+
+        const row = document.createElement('div');
+        row.className = 'round-input-row';
+        row.innerHTML = `
+          <div class="pelusa-avatar" style="background:${c.bg};border-color:${c.border};color:${c.text};width:30px;height:30px;font-size:11px;">
+            ${initials}
+          </div>
+          <span class="ri-name">${escapeHtml(p)}</span>
+          <input type="number" id="ri-${i}" min="0" value="0" inputmode="numeric" />
+        `;
+        wrap.appendChild(row);
+      });
+    }
+
+    function confirmRound() {
+      const rs = players.map((_, i) => {
+        const value = parseInt(document.getElementById(`ri-${i}`).value, 10);
+        return Number.isFinite(value) && value >= 0 ? value : 0;
+      });
+
+      rs.forEach((s, i) => scores[i] += s);
+      history.push(rs);
+      currentRound++;
+
+      renderScore();
+      renderHistory();
+      renderRound();
+      saveState();
+    }
+
+    function renderHistory() {
+      const head = document.getElementById('h-head');
+      const body = document.getElementById('h-body');
+
+      head.innerHTML = '<tr><th>Ronda</th>' + players.map(p => `<th>${escapeHtml(p.split(' ')[0])}</th>`).join('') + '</tr>';
+      body.innerHTML = '';
+
+      history.forEach((r, ri) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${ri + 1}</td>` + r.map(s => `<td>${s}</td>`).join('');
+        body.appendChild(tr);
+      });
+
+      const tot = document.createElement('tr');
+      tot.className = 'total-row';
+      tot.innerHTML = `<td>Total</td>` + scores.map(s => `<td>${s}</td>`).join('');
+      body.appendChild(tot);
+    }
+
+    function toggleHistory() {
+      histOpen = !histOpen;
+      document.getElementById('history-wrap').classList.toggle('hidden', !histOpen);
+      document.getElementById('h-arrow').textContent = histOpen ? '▼' : '▶';
+      saveState();
+    }
+
+    function resetGame() {
+      document.getElementById('game-view').classList.add('hidden');
+      document.getElementById('end-card').classList.add('hidden');
+      document.getElementById('round-card').classList.remove('hidden');
+      document.getElementById('setup-view').classList.remove('hidden');
+
+      players = [];
+      scores = [];
+      history = [];
+      currentRound = 0;
+      histOpen = false;
+
+      localStorage.removeItem('pelusas-score-app');
+
+      const wrap = document.getElementById('player-inputs');
+      wrap.innerHTML = '';
+      addPlayer('');
+      addPlayer('');
+    }
+
+    function endGame(save = true) {
+      if (!players.length) return;
+
+      document.getElementById('round-card').classList.add('hidden');
+      document.getElementById('end-card').classList.remove('hidden');
+
+      const sorted = players
+        .map((p, i) => ({ name: p, score: scores[i] }))
+        .sort((a, b) => b.score - a.score);
+
+      document.getElementById('win-name').textContent = sorted[0].name;
+      document.getElementById('win-pts').textContent = `${sorted[0].score} puntos en ${currentRound} rondas`;
+
+      if (save) saveState();
+    }
+
+    function getInitials(name) {
+      return name
+        .split(' ')
+        .map(w => w[0] || '')
+        .join('')
+        .toUpperCase()
+        .slice(0, 2) || '?';
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    addPlayer('');
+    addPlayer('');
+    loadState();
+  </script>
+</body>
+</html>
