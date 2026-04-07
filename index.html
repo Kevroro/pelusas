@@ -1,0 +1,509 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #1a1040;
+    --card-bg: #241958;
+    --card-border: #3d2e80;
+    --accent1: #f7c948;
+    --accent2: #ff6b6b;
+    --accent3: #5bc4f5;
+    --accent4: #7ee07e;
+    --accent5: #ff9f43;
+    --text: #fff;
+    --text-muted: #b0a8d8;
+  }
+
+  body { background: transparent; font-family: 'Nunito', sans-serif; color: var(--text); }
+
+  .app {
+    background: var(--bg);
+    max-width: 440px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding: 0 0 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bg-dots {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+
+  .header {
+    background: #120b30;
+    padding: 1.2rem 1rem 1rem;
+    text-align: center;
+    border-bottom: 3px solid var(--accent1);
+    position: relative;
+  }
+
+  .logo-pelusas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .logo-text {
+    font-size: 34px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    background: linear-gradient(180deg, #ffe066, #ffb300);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    line-height: 1;
+  }
+
+  .logo-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    margin-top: 2px;
+    text-transform: uppercase;
+  }
+
+  .pelusa-row {
+    display: flex; justify-content: center; gap: 6px; margin-top: 8px;
+  }
+
+  .pelusa-mini {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    border: 2px solid rgba(255,255,255,0.2);
+  }
+
+  .content { padding: 1rem; position: relative; }
+
+  .card {
+    background: var(--card-bg);
+    border: 1.5px solid var(--card-border);
+    border-radius: 16px;
+    padding: 1.1rem 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .card-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--accent1);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .player-setup-row {
+    display: flex; gap: 8px; align-items: center; margin-bottom: 8px;
+  }
+
+  .color-dot {
+    width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;
+  }
+
+  .player-setup-row input[type="text"] {
+    flex: 1;
+    background: #120b30;
+    border: 1.5px solid var(--card-border);
+    border-radius: 10px;
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 8px 12px;
+    outline: none;
+  }
+  .player-setup-row input[type="text"]::placeholder { color: #6055a0; }
+  .player-setup-row input[type="text"]:focus { border-color: var(--accent1); }
+
+  .remove-btn {
+    background: rgba(255,107,107,0.15);
+    border: 1.5px solid #ff6b6b44;
+    border-radius: 8px;
+    color: #ff6b6b;
+    width: 32px; height: 32px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .remove-btn:hover { background: rgba(255,107,107,0.3); }
+
+  .add-btn {
+    width: 100%;
+    background: none;
+    border: 1.5px dashed var(--card-border);
+    border-radius: 10px;
+    color: var(--text-muted);
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+  }
+  .add-btn:hover { border-color: var(--accent1); color: var(--accent1); }
+
+  .start-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #f7c948, #ff9f43);
+    border: none;
+    border-radius: 14px;
+    color: #1a1040;
+    font-family: 'Nunito', sans-serif;
+    font-size: 17px;
+    font-weight: 900;
+    padding: 13px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 0 #c4821a;
+    transition: transform 0.1s;
+  }
+  .start-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #c4821a; }
+  .start-btn:hover { background: linear-gradient(135deg, #ffe066, #ffb300); }
+
+  .round-badge {
+    display: inline-block;
+    background: #2e1f70;
+    border: 1.5px solid var(--card-border);
+    border-radius: 999px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--accent1);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .score-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .score-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #120b30;
+    border: 1.5px solid var(--card-border);
+    border-radius: 12px;
+    padding: 9px 12px;
+  }
+  .score-row.leader { border-color: var(--accent1); background: #1e1350; }
+
+  .pelusa-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 900;
+    border: 2px solid rgba(255,255,255,0.15);
+    flex-shrink: 0;
+  }
+
+  .rank-num {
+    font-size: 12px; font-weight: 900; color: #6055a0; width: 16px; text-align: center;
+  }
+
+  .score-name {
+    flex: 1; font-size: 15px; font-weight: 800; color: white;
+  }
+
+  .score-pts {
+    font-size: 22px; font-weight: 900; color: var(--accent1);
+  }
+
+  .leader-icon { font-size: 16px; }
+
+  .round-inputs { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+
+  .round-input-row {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .round-input-row .ri-name {
+    flex: 1; font-size: 14px; font-weight: 800; color: var(--text-muted);
+  }
+  .round-input-row input[type="number"] {
+    width: 72px; text-align: center;
+    background: #120b30;
+    border: 1.5px solid var(--card-border);
+    border-radius: 10px;
+    color: var(--accent1);
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+    padding: 6px 8px;
+    outline: none;
+  }
+  .round-input-row input[type="number"]:focus { border-color: var(--accent1); }
+
+  .confirm-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #5bc4f5, #2e86c1);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 900;
+    padding: 11px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 3px 0 #1565a0;
+  }
+  .confirm-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #1565a0; }
+  .confirm-btn:hover { background: linear-gradient(135deg, #7dd6ff, #3da0dd); }
+
+  .history-toggle {
+    background: none; border: none;
+    color: var(--text-muted);
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px; font-weight: 700;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+    padding: 0;
+  }
+  .history-toggle:hover { color: var(--accent1); }
+
+  .history-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; font-family: 'Nunito', sans-serif; }
+  .history-table th { color: var(--text-muted); font-weight: 800; padding: 4px 6px; border-bottom: 1px solid var(--card-border); text-align: center; }
+  .history-table th:first-child { text-align: left; }
+  .history-table td { padding: 5px 6px; color: var(--text); text-align: center; border-bottom: 1px solid #1e1350; font-weight: 700; }
+  .history-table td:first-child { color: var(--text-muted); text-align: left; }
+  .history-table tr.total-row td { color: var(--accent1); font-weight: 900; border-top: 1px solid var(--card-border); border-bottom: none; }
+
+  .end-section { text-align: center; padding: 0.5rem 0; }
+  .win-emoji { font-size: 44px; display: block; margin-bottom: 6px; }
+  .win-title { font-size: 13px; font-weight: 800; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .win-name { font-size: 26px; font-weight: 900; color: var(--accent1); margin: 4px 0; }
+  .win-pts { font-size: 14px; color: var(--text-muted); font-weight: 700; margin-bottom: 14px; }
+
+  .new-game-btn {
+    background: none;
+    border: 2px solid var(--card-border);
+    border-radius: 12px;
+    color: var(--text-muted);
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px; font-weight: 800;
+    padding: 9px 22px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .new-game-btn:hover { border-color: var(--accent1); color: var(--accent1); }
+
+  .hidden { display: none !important; }
+</style>
+
+<div class="app">
+  <div class="bg-dots"></div>
+
+  <div class="header">
+    <div class="logo-pelusas">
+      <span style="font-size:28px;">🧶</span>
+      <span class="logo-text">PELUSAS</span>
+      <span style="font-size:28px;">🧶</span>
+    </div>
+    <div class="logo-sub">Contador de puntos</div>
+    <div class="pelusa-row">
+      <div class="pelusa-mini" style="background:#ff6b6b33; border-color:#ff6b6b;">🔴</div>
+      <div class="pelusa-mini" style="background:#f7c94833; border-color:#f7c948;">🟡</div>
+      <div class="pelusa-mini" style="background:#7ee07e33; border-color:#7ee07e;">🟢</div>
+      <div class="pelusa-mini" style="background:#5bc4f533; border-color:#5bc4f5;">🔵</div>
+      <div class="pelusa-mini" style="background:#ff9f4333; border-color:#ff9f43;">🟠</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- SETUP -->
+    <div id="setup-view">
+      <div class="card">
+        <div class="card-title">Jugadores</div>
+        <div id="player-inputs"></div>
+        <button class="add-btn" onclick="addPlayer()">+ Añadir jugador</button>
+      </div>
+      <button class="start-btn" onclick="startGame()">¡A jugar!</button>
+    </div>
+
+    <!-- GAME -->
+    <div id="game-view" class="hidden">
+
+      <div class="card" id="scoreboard-card">
+        <div class="card-title">Clasificación</div>
+        <div class="score-list" id="score-list"></div>
+      </div>
+
+      <div class="card" id="round-card">
+        <div id="round-badge" class="round-badge"></div>
+        <div class="card-title" style="margin-bottom:8px;">Puntos de esta ronda</div>
+        <div class="round-inputs" id="round-inputs"></div>
+        <button class="confirm-btn" onclick="confirmRound()">Confirmar ronda ✓</button>
+      </div>
+
+      <div class="card hidden" id="end-card">
+        <div class="end-section">
+          <span class="win-emoji">🏆</span>
+          <div class="win-title">Ganador/a</div>
+          <div class="win-name" id="win-name"></div>
+          <div class="win-pts" id="win-pts"></div>
+          <button class="new-game-btn" onclick="resetGame()">Nueva partida</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <button class="history-toggle" onclick="toggleHistory()">
+          <span id="h-arrow">▶</span> Historial de rondas
+        </button>
+        <div id="history-wrap" class="hidden">
+          <table class="history-table">
+            <thead id="h-head"></thead>
+            <tbody id="h-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const COLORS = [
+  {bg:'#ff6b6b33',border:'#ff6b6b',text:'#ff6b6b',dot:'#ff6b6b'},
+  {bg:'#f7c94833',border:'#f7c948',text:'#f7c948',dot:'#f7c948'},
+  {bg:'#7ee07e33',border:'#7ee07e',text:'#7ee07e',dot:'#7ee07e'},
+  {bg:'#5bc4f533',border:'#5bc4f5',text:'#5bc4f5',dot:'#5bc4f5'},
+  {bg:'#ff9f4333',border:'#ff9f43',text:'#ff9f43',dot:'#ff9f43'},
+  {bg:'#c39bd333',border:'#c39bd3',text:'#c39bd3',dot:'#c39bd3'},
+];
+
+let players = [], scores = [], history = [], currentRound = 0, histOpen = false;
+
+function addPlayer(name='') {
+  const wrap = document.getElementById('player-inputs');
+  const i = wrap.children.length;
+  if (i >= 6) return;
+  const c = COLORS[i % COLORS.length];
+  const row = document.createElement('div');
+  row.className = 'player-setup-row';
+  row.innerHTML = `
+    <div class="color-dot" style="background:${c.dot}"></div>
+    <input type="text" placeholder="Jugador ${i+1}" value="${name}" />
+    <button class="remove-btn" onclick="removePlayer(this)">✕</button>
+  `;
+  wrap.appendChild(row);
+}
+
+function removePlayer(btn) {
+  const wrap = document.getElementById('player-inputs');
+  if (wrap.children.length > 2) btn.parentElement.remove();
+}
+
+function startGame() {
+  const inputs = document.querySelectorAll('#player-inputs input');
+  players = Array.from(inputs).map((inp,i) => inp.value.trim() || `Jugador ${i+1}`);
+  if (players.length < 2) return;
+  scores = players.map(() => 0);
+  history = [];
+  currentRound = 0;
+  document.getElementById('setup-view').classList.add('hidden');
+  document.getElementById('game-view').classList.remove('hidden');
+  renderScore();
+  renderRound();
+}
+
+function renderScore() {
+  const list = document.getElementById('score-list');
+  const sorted = players.map((p,i) => ({name:p,score:scores[i],idx:i})).sort((a,b)=>b.score-a.score);
+  list.innerHTML = '';
+  sorted.forEach((p, rank) => {
+    const c = COLORS[p.idx % COLORS.length];
+    const initials = p.name.split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2) || '?';
+    const isLeader = rank === 0 && (currentRound > 0 || p.score > 0);
+    const row = document.createElement('div');
+    row.className = 'score-row' + (isLeader ? ' leader' : '');
+    row.innerHTML = `
+      <span class="rank-num">${rank+1}</span>
+      <div class="pelusa-avatar" style="background:${c.bg};border-color:${c.border};color:${c.text}">${initials}</div>
+      <span class="score-name">${p.name}</span>
+      ${isLeader ? '<span class="leader-icon">👑</span>' : ''}
+      <span class="score-pts">${p.score}</span>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function renderRound() {
+  document.getElementById('round-badge').textContent = `Ronda ${currentRound + 1}`;
+  const wrap = document.getElementById('round-inputs');
+  wrap.innerHTML = '';
+  players.forEach((p,i) => {
+    const c = COLORS[i % COLORS.length];
+    const row = document.createElement('div');
+    row.className = 'round-input-row';
+    row.innerHTML = `
+      <div class="pelusa-avatar" style="background:${c.bg};border-color:${c.border};color:${c.text};width:30px;height:30px;font-size:11px;font-weight:900;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        ${p.split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2)||'?'}
+      </div>
+      <span class="ri-name">${p}</span>
+      <input type="number" id="ri-${i}" min="0" value="0" />
+    `;
+    wrap.appendChild(row);
+  });
+}
+
+function confirmRound() {
+  const rs = players.map((_,i) => parseInt(document.getElementById(`ri-${i}`).value)||0);
+  rs.forEach((s,i) => scores[i] += s);
+  history.push(rs);
+  currentRound++;
+  renderScore();
+  renderHistory();
+  renderRound();
+}
+
+function renderHistory() {
+  const head = document.getElementById('h-head');
+  const body = document.getElementById('h-body');
+  head.innerHTML = '<tr><th>Ronda</th>' + players.map(p=>`<th>${p.split(' ')[0]}</th>`).join('') + '</tr>';
+  body.innerHTML = '';
+  history.forEach((r,ri) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${ri+1}</td>` + r.map(s=>`<td>${s}</td>`).join('');
+    body.appendChild(tr);
+  });
+  const tot = document.createElement('tr');
+  tot.className = 'total-row';
+  tot.innerHTML = `<td>Total</td>` + scores.map(s=>`<td>${s}</td>`).join('');
+  body.appendChild(tot);
+}
+
+function toggleHistory() {
+  histOpen = !histOpen;
+  document.getElementById('history-wrap').classList.toggle('hidden', !histOpen);
+  document.getElementById('h-arrow').textContent = histOpen ? '▼' : '▶';
+}
+
+function resetGame() {
+  document.getElementById('game-view').classList.add('hidden');
+  document.getElementById('end-card').classList.add('hidden');
+  document.getElementById('round-card').classList.remove('hidden');
+  document.getElementById('setup-view').classList.remove('hidden');
+}
+
+function endGame() {
+  document.getElementById('round-card').classList.add('hidden');
+  document.getElementById('end-card').classList.remove('hidden');
+  const sorted = players.map((p,i)=>({name:p,score:scores[i]})).sort((a,b)=>b.score-a.score);
+  document.getElementById('win-name').textContent = sorted[0].name;
+  document.getElementById('win-pts').textContent = `${sorted[0].score} puntos en ${currentRound} rondas`;
+}
+
+addPlayer('');
+addPlayer('');
+</script>
